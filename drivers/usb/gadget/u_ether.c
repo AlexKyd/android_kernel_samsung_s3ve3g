@@ -1203,7 +1203,6 @@ struct net_device *gether_connect(struct gether *link)
 				link->close(link);
 		}
 		spin_unlock(&dev->lock);
-
 		netif_carrier_on(dev->net);
 		if (netif_running(dev->net))
 			eth_start(dev, GFP_ATOMIC);

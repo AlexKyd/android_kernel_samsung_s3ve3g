@@ -682,17 +682,10 @@ static ssize_t acc_write(struct file *fp, const char __user *buf,
 			break;
 		}
 
-		if (count > BULK_BUFFER_SIZE) {
+		if (count > BULK_BUFFER_SIZE)
 			xfer = BULK_BUFFER_SIZE;
-			/* ZLP, They will be more TX requests so not yet. */
-			req->zero = 0;
-		} else {
+		else
 			xfer = count;
-			/* If the data length is a multple of the
-			 * maxpacket size then send a zero length packet(ZLP).
-			*/
-			req->zero = ((xfer % dev->ep_in->maxpacket) == 0);
-		}
 		if (copy_from_user(req->buf, buf, xfer)) {
 			r = -EFAULT;
 			break;
@@ -842,7 +835,7 @@ static int acc_ctrlrequest(struct usb_composite_dev *cdev,
 		if (b_request == ACCESSORY_START) {
 			dev->start_requested = 1;
 			schedule_delayed_work(
-				&dev->start_work, msecs_to_jiffies(10));
+				&dev->start_work, msecs_to_jiffies(200));
 			value = 0;
 		} else if (b_request == ACCESSORY_SEND_STRING) {
 			dev->string_index = w_index;
